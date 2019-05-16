@@ -1,0 +1,93 @@
+-- ¹ 1
+SELECT count(distinct t."name")
+FROM public."Departments" d, public."Groups" g, public."GroupsLectures" gl,
+	public."Lectures" l, public."Teachers" t
+WHERE d."name" like 'Sofware Development' AND g.department_id = d.id AND
+	gl.group_id = g.id AND gl.lecture_id = l.id AND l.teather_id = t.id
+;
+
+-- ¹ 2
+SELECT count(distinct s."name")
+FROM  public."Lectures" l, public."Teachers" t, public."Subjects" s
+WHERE t."name" like 'Dave' AND t.surname like 'McQueen'
+AND l.teather_id = t.id AND l.subject_id = s.id
+;
+
+-- ¹ 3
+SELECT count(*)
+FROM public."Lectures" l
+WHERE l.lecture_room like 'D201'
+;
+
+-- ¹ 4
+SELECT l.lecture_room, count(l.id)
+FROM public."Lectures" l
+GROUP BY l.lecture_room
+;
+
+-- ¹ 5
+SELECT t."name" || ' ' || t.surname AS "Teather name", count(g.id)
+FROM public."Groups" g, public."GroupsLectures" gl, public."Lectures" l,
+	public."Teachers" t
+WHERE t."name" like 'Jack' AND t.surname like 'Underhill' AND gl.group_id = g.id
+	AND gl.lecture_id = l.id AND l.teather_id = t.id
+GROUP BY "Teather name"
+;
+
+-- ¹ 6
+SELECT SUM (t.salary) / count(t.id)
+FROM public."Faculties" f, public."Departments" d,
+	public."Groups" g, public."GroupsLectures" gl,
+	public."Lectures" l, public."Teachers" t
+WHERE f."name" like 'Computer Science' AND d.faculty_id = f.id 
+	AND g.department_id = d.id AND gl.group_id = g.id 
+	AND gl.lecture_id = l.id AND l.teather_id = t.id
+;
+
+-- ¹ 7
+
+-- ¹ 8
+SELECT SUM (d.financing) / count(d.id)
+FROM public."Departments" d;
+
+-- ¹ 9
+SELECT distinct t."name" || ' ' || t.surname AS "Teather name" , count(s.id)
+FROM public."Lectures" l, public."Teachers" t, public."Subjects" s
+WHERE l.subject_id = s.id AND l.teather_id = t.id
+GROUP BY "Teather name"
+;
+
+-- ¹ 10
+SELECT distinct l.day_of_week, count(l.id)
+--SELECT *
+FROM public."Lectures" l
+GROUP BY  l.day_of_week 
+;
+
+-- ¹ 11
+SELECT distinct l.lecture_room , count(distinct d."name")
+FROM public."Departments" d, public."Groups" g, public."GroupsLectures" gl,
+	public."Lectures" l
+WHERE g.department_id = d.id AND gl.group_id = g.id 
+	AND gl.lecture_id = l.id
+GROUP BY l.lecture_room
+;
+
+-- ¹ 12
+SELECT distinct f."name", count(distinct s."name")
+FROM public."Faculties" f, public."Departments" d,
+	public."Groups" g, public."GroupsLectures" gl,
+	public."Lectures" l, public."Subjects" s
+WHERE f."name" like 'Computer Science' AND d.faculty_id = f.id 
+	AND g.department_id = d.id AND gl.group_id = g.id 
+	AND gl.lecture_id = l.id AND l.subject_id = s.id
+GROUP BY f."name"
+;
+
+-- ¹ 13
+SELECT distinct t."name" || ' ' || t.surname AS "Teather name",
+	l.lecture_room, count(s.id)
+FROM public."Lectures" l, public."Subjects" s, public."Teachers" t
+WHERE l.subject_id = s.id AND l.teather_id = t.id
+GROUP BY "Teather name", l.lecture_room
+;
